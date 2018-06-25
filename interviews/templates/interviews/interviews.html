@@ -1,0 +1,238 @@
+{% extends "interviews/base.html" %}
+{% load static %}
+
+            {% block extra_head %}
+<link rel="stylesheet" href="{% static 'jqwidgets/jqwidgets/styles/jqx.base.css' %}" type="text/css" />
+
+            {% endblock %}
+
+            {% block content %}
+
+<script type="text/javascript">
+    var boo = "{{ data|safe|escapejs }}";
+    var data = JSON.parse(boo);
+    //console.log(data);
+//console.log(data[1].fields.user_id);
+</script>
+        <div>
+            <div style='float: left;'>
+                <input type="button" value="Export to Excel" id='excelExport'/>
+                <input type="button" value="Export to CSV" id='csvExport' />
+                <input type="button" value="Export to PDF" id='pdfExport' />
+                <input value="Remove Filter(s)" id="clearfilteringbutton" type="button" />
+
+            </div>
+
+        </div>
+        <br>
+    <div id='jqxWidget' style='margin-top: 20px;'>
+        <div id="grid">
+        </div>
+        
+    </div>
+    <br><br>
+    
+          
+{% endblock %}
+
+{% block jqwidgets %}
+
+    <script type="text/javascript" src="{% static 'jqwidgets/scripts/knockout-3.0.0.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxcore.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxdata.js' %}"></script>
+
+
+
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxbuttons.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxscrollbar.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxmenu.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxdropdownlist.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.selection.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.sort.js' %}"></script> 
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.filter.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxpanel.js' %}"></script>
+
+    
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.columnsresize.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.edit.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.pager.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxknockout.js' %}"></script> 
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxcheckbox.js' %}"></script> 
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxlistbox.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxdata.export.js' %}"></script> 
+     <script type="text/javascript" src="{% static 'jqwidgets/jqwidgets/jqxgrid.export.js' %}"></script>
+      
+    <script type="text/javascript" src="{% static 'jqwidgets/scripts/demos.js' %}"></script>
+{% endblock %}
+
+{% block custom_jqwidgets %}
+<style>
+    
+    #grid {
+    position:absolute;
+    /*right:0;*/
+    width: 943px;
+    height: 600px;
+    }
+</style>
+<script type="text/javascript">
+        //var data = "{{ data|safe|escapejs }}";
+        //var data = JSON.parse(boo);
+        //console.log(boo);
+        //console.log(data[1].fields.user_id); 
+       
+        
+    $(document).ready(function () {
+        var source =
+            {
+                
+                datafields: [
+                    { name: 'id', type: 'number' },
+                    { name: 'user_id', type: 'string'},
+                    { name: 'interview_id', type: 'string'},
+                    { name: 'first_interview', type: 'string'},
+                    { name: 'coop_union', type: 'string'},
+                    { name: 'prime_coop', type: 'string'},
+                    { name: 'latitude', type: 'number'},
+                    { name: 'longitude', type: 'float'},
+                    { name: 'current_section', type: 'string'},
+                    { name: 'field_date', type: 'string'},
+                    { name: '1_0_1_1', type: 'string'},
+                    { name: '1_0_1_2', type: 'string'},
+                    { name: '1_0_1_3', type: 'number'},
+                    { name: '1_0_1_4', type: 'string'},
+                    { name: '1_0_1_5', type: 'string'},
+                    { name: '2_1_1_1', type: 'number'},
+                    { name: '2_2_1_1', type: 'number'},
+                    { name: '2_1_1_2', type: 'number'},
+                    { name: '2_2_1_2', type: 'number'},
+                    { name: '2_1_1_3', type: 'number'},
+                    { name: '2_2_1_3', type: 'number'},
+                    { name: '2_1_1_4', type: 'number'},
+                    { name: '2_2_1_4', type: 'number'},
+                    { name: '2_1_1_5', type: 'number'},
+                    { name: '2_2_1_5', type: 'number'},
+                    { name: '4_0_1_1', type: 'number'},
+                    { name: '4_0_1_2', type: 'number'},
+                    { name: '4_0_1_3', type: 'string'},
+                    { name: '4_0_1_4', type: 'string'},
+                    { name: '4_0_1_5', type: 'string'},
+                    { name: '5_0_1_1', type: 'string'},
+                    { name: '5_0_1_2', type: 'string'},
+                    { name: '5_0_1_3', type: 'string'},
+                    { name: '5_0_1_4', type: 'string'},
+                    { name: '6_0_1_1', type: 'string'},
+                    { name: '6_0_1_2', type: 'string'},
+                    { name: '6_0_1_3', type: 'string'},
+                    { name: '6_0_1_4', type: 'string'},
+                    { name: '6_0_1_5', type: 'string'},
+                    { name: '7_0_1_1', type: 'string'},
+                    { name: '7_0_1_2', type: 'string'},
+                    
+                ],
+                datatype: "array",
+                localdata: data
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+       
+            $("#grid").jqxGrid(
+            {
+                width: '96%',
+                source: dataAdapter,
+                columnsresize: true,
+                filterable: true,
+                pageable: true,
+                autoheight: true,
+                sortable: true,
+                columns: [
+                  { text: 'Entry',  columngroup: 'metaData', datafield: 'id'},
+                  { text: 'User Id',columngroup: 'metaData', datafield: 'user_id', width: 200 },
+                  { text: 'Interview Id',columngroup: 'metaData', datafield: 'interview_id', width: 100 },
+                  { text: 'First interview',columngroup: 'metaData', datafield: 'first_interview', width: 100 },
+                  { text: 'Coop Union', columngroup: 'metaData',datafield: 'coop_union', width: 100 },
+                  { text: 'Prime Coop', columngroup: 'metaData',datafield: 'prime_coop', width: 100 },
+                  { text: 'Latitude', columngroup: 'metaData',datafield: 'latitude', width: 100 },
+                  { text: 'Longitude', columngroup: 'metaData',datafield: 'longitude', width: 100 },
+                  { text: 'Last question',columngroup: 'metaData', datafield: 'current_section', width: 80 },
+                  { text: 'Date',columngroup: 'metaData', datafield: 'field_date', width: 100 },
+                  { text: 'A. Respondent Name',  columngroup: 'Q1',datafield: '1_0_1_1', width: 200 },
+                  { text: 'B. Village', columngroup: 'Q1', datafield: '1_0_1_2', width: 100 },
+                  { text: 'C. Age', columngroup: 'Q1',datafield: '1_0_1_3', width: 60 },
+                  { text: 'D. Gender', columngroup: 'Q1',datafield: '1_0_1_4', width: 65 },
+                  { text: 'E. Phone', columngroup: 'Q1',datafield: '1_0_1_5', width: 130 },
+                  { text: 'Male', columngroup: 'Q2_a', datafield: '2_1_1_1', width: 60 },
+                  { text: 'Female', columngroup: 'Q2_a',datafield: '2_2_1_1', width: 60 },
+                  { text: 'Male ', columngroup: 'Q2_b',datafield: '2_1_1_2', width: 60 },
+                  { text: 'Female ', columngroup: 'Q2_b',datafield: '2_2_1_2', width: 60 },
+                  { text: 'Male ', columngroup: 'Q2_c',datafield: '2_1_1_3', width: 60 },
+                  { text: 'Female ', columngroup: 'Q2_c',datafield: '2_2_1_3', width: 60 },
+                  { text: 'Male ', columngroup: 'Q2_d',datafield: '2_1_1_4', width: 60 },
+                  { text: 'Female ', columngroup: 'Q2_d',datafield: '2_2_1_4', width: 60 },
+                  { text: 'Male ', columngroup: 'Q2_e',datafield: '2_1_1_5', width: 60 },
+                  { text: 'Female ', columngroup: 'Q2_e',datafield: '2_2_1_5', width: 60 },
+                  { text: 'A. Years in farming ', columngroup: 'Q4',datafield: '4_0_1_1', width: 60 },
+                  { text: 'B. Years in Dairy farming', columngroup: 'Q4',datafield: '4_0_1_2', width: 60 },
+                  { text: 'C. How you started.. ', columngroup: 'Q4',datafield: '4_0_1_3', width: 140 },
+                  { text: 'D. Is Dairy Farmaing main occupation ', columngroup: 'Q4',datafield: '4_0_1_4', width: 60 },
+                  { text: 'E. Main occupation ', columngroup: 'Q4',datafield: '4_0_1_5', width: 90 },
+                  { text: 'A. Cooperative membership ', columngroup: 'Q5',datafield: '5_0_1_1', width: 120 },
+                  { text: 'B. Membership status ', columngroup: 'Q5',datafield: '5_0_1_2', width: 200 },
+                  { text: 'C. Intend to provide milk ', columngroup: 'Q5',datafield: '5_0_1_3', width: 90 },
+                  { text: 'D. Cooperative role ', columngroup: 'Q5',datafield: '5_0_1_4', width: 160 },
+                  { text: 'i. Own/ Freehold ', columngroup: 'Q6',datafield: '6_0_1_1', width: 90 },
+                  { text: 'ii. Settlement (Lease GRZ) ', columngroup: 'Q6',datafield: '6_0_1_2', width: 90 },
+                  { text: 'iv. Rent/ Sub-lease/ informal lease ', columngroup: 'Q6',datafield: '6_0_1_3', width: 90 },
+                  { text: 'v. Traditional land ', columngroup: 'Q6',datafield: '6_0_1_4', width: 90 },
+                  { text: 'v. Other ', columngroup: 'Q6',datafield: '6_0_1_5', width: 90 },
+                  { text: 'A. Land within 1 Km radius ', columngroup: 'Q7',datafield: '7_0_1_1', width: 60 },
+                  { text: 'B. How Far ', columngroup: 'Q7',datafield: '7_0_1_2', width: 60 },
+                 
+                ],
+                columngroups: [
+                    { text: 'Meta Data', align: 'center', name: 'metaData'},
+                    { text: 'Q1 GENERAL INFORMATION', align: 'center', name: 'Q1'},
+                    { text: 'Q2 HOUSEHOLD INFORMATION', align: 'center', name: 'Q2'},
+                    { text: 'A. 16yrs and Under', parentgroup: 'Q2', align: 'center', name: 'Q2_a'},
+                    { text: 'B. 17 - 25yrs', parentgroup: 'Q2', align: 'center', name: 'Q2_b'},
+                    { text: 'C. 26 - 40yrs', parentgroup: 'Q2', align: 'center', name: 'Q2_c'},
+                    { text: 'D. 41 - 60yrs', parentgroup: 'Q2', align: 'center', name: 'Q2_d'},
+                    { text: 'E. Above 60yrs', parentgroup: 'Q2', align: 'center', name: 'Q2_e'},
+
+                    { text: 'Q4 HISTORY OF INVOLVEMENT IN DAIRY FARMING', align: 'center', name: 'Q4'},
+                    { text: 'Q5 COOPERATIVE MEMBERSHIP', align: 'center', name: 'Q5'},
+                    { text: 'Q6 LAND OWNERSHIP/ USE OF FARMER', align: 'center', name: 'Q6'},
+                    { text: 'Q7 WHERE DO YOU GRAZE YOUR CATTLE', align: 'center', name: 'Q7'},
+                    { text: 'Question 8', align: 'center', name: 'Q8'},
+                    { text: 'Question 9', align: 'center', name: 'Q9'},
+                    { text: 'Question 10', align: 'center', name: 'Q10'},
+                ]
+            });
+            $('#grid').jqxGrid({ pagesizeoptions: ['10', '20', '30','40']}); 
+            $("#excelExport").jqxButton();
+            $("#csvExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'jqxGrid');           
+            });
+            
+            $("#csvExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+            });
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+            });
+
+            $('#clearfilteringbutton').click(function () {
+                $("#grid").jqxGrid('clearfilters');
+            });
+        });
+
+    </script>  
+{% endblock %}
+

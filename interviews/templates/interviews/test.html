@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}" />
+ 	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
+ 	<link rel="stylesheet" href="{% static 'jqwidgets/jqwidgets/styles/jqx.base.css' %}" type="text/css" />
+
+
+   
+</head>
+<body>
+<script type="text/javascript">
+var boo = "{{ data|safe|escapejs }}";
+var data = JSON.parse(boo);
+console.log(data);
+//console.log(data[1].fields.user_id);
+</script>
+
+
+
+        <div id='jqxWidget'>
+        <div id="grid">
+        </div>
+    </div>
+
+<script src="{% static "js/app.js" %}"></script>
+
+    
+<script type="text/javascript">
+        
+        //var data = "{{ data|safe|escapejs }}";
+        // /var data = JSON.parse(boo);
+        //console.log(boo);
+        //console.log(data[1].fields.user_id); 
+       for (var key in data){
+       	console.log(data[key])
+       }
+        
+    $(document).ready(function () {
+        var source =
+            {
+                
+                datafields: [
+                	{ name: 'entry', type: 'string' },
+                    { name: 'user_id', type: 'string'},
+                    { name: 'interview_id', type: 'string'},
+                    { name: 'first_interview', type: 'string'},
+                    { name: 'coop_union', type: 'string'},
+                    { name: 'prime_coop', type: 'string'},
+                    { name: 'latitude', type: 'string'},
+                    { name: 'longitude', type: 'string'},
+                    { name: 'current_section', type: 'string'},
+                    { name: 'field_date', type: 'string'},
+                    { name: 's_1_0_1_1', type: 'string'},
+                    { name: 's_1_0_1_2', type: 'string'},
+                    { name: 's_1_0_1_3', type: 'string'},
+                    { name: 's_1_0_1_4', type: 'string'},
+                    { name: 's_1_0_1_5', type: 'string'},
+                    
+                ],
+                datatype: "array",
+                localdata: data
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+       
+            $("#grid").jqxGrid(
+            {
+                width: getWidth('Grid'),
+                source: dataAdapter,
+                columnsresize: true,
+                sortable: true,
+                columns: [
+                  { text: 'Entry', datafield: 'entry'},
+                  { text: 'User Id', datafield: 'user_id', width: 200 },
+                  { text: 'Interview Id', datafield: 'interview_id', width: 200 },
+                  { text: 'First interview', datafield: 'first_interview', width: 200 },
+                  { text: 'Coop Union', datafield: 'coop_union', width: 200 },
+                  { text: 'Prime Coop', datafield: 'prime_coop', width: 200 },
+                  { text: 'Latitude', datafield: 'latitude', width: 200 },
+                  { text: 'Longitude', datafield: 'longitude', width: 200 },
+                  { text: 'Last question', datafield: 'current_section', width: 200 },
+                  { text: 'Date', datafield: 'field_date', width: 200 },
+                  { text: 'Respondent Name', datafield: 's_1_0_1_1', width: 200 },
+                  { text: 'Village', datafield: 's_1_0_1_2', width: 200 },
+                  { text: 'Age', datafield: 's_1_0_1_3', width: 200 },
+                  { text: 'Gender', datafield: 's_1_0_1_4', width: 200 },
+                  { text: 'Phone', datafield: 's_1_0_1_5', width: 200 },
+                 
+                ]
+            });
+        });
+
+    </script>
+</body>
+</html>
