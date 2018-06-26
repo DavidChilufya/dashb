@@ -98,11 +98,11 @@ WSGI_APPLICATION = 'zdtp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zdtptest',
-        'USER': 'zdtptest',
-        'PASSWORD': 'Mushr00msoup@',
-        'HOST': 'zdtptest.db.11847745.de4.hostedresource.net',
-        'PORT': '3306',
+        'NAME': 'zdtp_dashboard',
+        'USER': 'david',
+        'PASSWORD': 'rainbowsky',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
